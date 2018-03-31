@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 14/02/2018, 10:51:13 PM
+    Author     : Luna
+*/
+.backgroundLogin{
+    -fx-background-color:'#b2ebf2';
+}
+
+.btnLogin{
+    -fx-background-color: '#03a9f4';
+    -fx-font-size: 10pt;
+}
+
+.label{
+    -fx-font-size: 10pt;
+}
+
+.dashboardPane{
+    -fx-background-color: '#03a9f4';
+}
+
+.dashboardPane2{
+    -fx-background-color:'white';
+}
+
+.iconBackground{
+    -fx-background-color: '#03a9f4';
+    -fx-border-radius:50;
+}
+
+.iconContainerIcon{
+
+}
