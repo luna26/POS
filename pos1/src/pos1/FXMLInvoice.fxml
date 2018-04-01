@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="764.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos1.FXMLInvoiceController">
+   <children>
+      <Label layoutX="317.0" layoutY="28.0" text="Facturar">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Pane layoutX="28.0" layoutY="63.0" prefHeight="200.0" prefWidth="664.0">
+         <children>
+            <Label layoutX="25.0" layoutY="23.0" text="Informacion del Cliente">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="63.0" text="Nombre" />
+            <Label layoutX="414.0" layoutY="28.0" text="Direccion" />
+            <Label layoutX="27.0" layoutY="100.0" text="Cedula" />
+            <Label layoutX="22.0" layoutY="136.0" text="Telefono" />
+            <TextField layoutX="114.0" layoutY="59.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextField layoutX="114.0" layoutY="96.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextField layoutX="114.0" layoutY="132.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextArea layoutX="414.0" layoutY="44.0" prefHeight="113.0" prefWidth="227.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="28.0" layoutY="263.0" prefHeight="403.0" prefWidth="664.0">
+         <children>
+            <Label layoutX="14.0" layoutY="23.0" text="Informacion de Productos">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TableView fx:id="invoiceTbl" layoutX="14.0" layoutY="109.0" prefHeight="239.0" prefWidth="637.0">
+              <columns>
+                  <TableColumn fx:id="codeCol" prefWidth="75.0" text="Codigo" />
+                  <TableColumn fx:id="nameCol" prefWidth="231.0" text="Nombre" />
+                  <TableColumn fx:id="uniPCol" prefWidth="96.0" text="Precio Unidad" />
+                  <TableColumn fx:id="cantCol" prefWidth="102.0" text="Cantidad" />
+                  <TableColumn fx:id="totalCant" prefWidth="132.0" text="Total / Producto" />
+              </columns>
+            </TableView>
+            <Button fx:id="btnAddProductInvoice" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" text="Agregar Producto" />
+            <TextField fx:id="txtCodeToAdd" layoutX="145.0" layoutY="60.0" promptText="Codigo de Producto" />
+            <Button layoutX="540.0" layoutY="358.0" mnemonicParsing="false" text="Eliminar Prodcuto" />
+            <Button layoutX="14.0" layoutY="358.0" mnemonicParsing="false" text="Generar Factura" />
+         </children>
+      </Pane>
+      <Label layoutX="43.0" layoutY="666.0" text="Total sin IV">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="698.0" text="IV">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="363.0" layoutY="666.0" text="Total a Pagar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="totalWithoutIV" layoutX="128.0" layoutY="668.0" />
+      <Label fx:id="IVLabel" layoutX="128.0" layoutY="700.0" />
+      <Label fx:id="totaLabel" layoutX="481.0" layoutY="668.0" />
+   </children>
+</AnchorPane>

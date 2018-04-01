@@ -56,12 +56,18 @@ public class FXMLDocumentController implements Initializable {
                 try {
                     String[] arrayUserAlready = getCredentials(user);
                     if (checkCredentials(arrayUserAlready, user, pass)) {
-                        if(Integer.parseInt(arrayUserAlready[2]) == 0){
-                        }else if(Integer.parseInt(arrayUserAlready[2]) == 1){
+                        if (Integer.parseInt(arrayUserAlready[2]) == 0) {
+                            Parent dashbaord = FXMLLoader.load(getClass().getResource("FXMLUserDashboard.fxml"));
+                            Stage stage = new Stage();
+                            stage.setTitle("Panel de Usuario");
+                            stage.setScene(new Scene(dashbaord));
+                            stage.show();
+                            ((Node) (event.getSource())).getScene().getWindow().hide();
+                        } else if (Integer.parseInt(arrayUserAlready[2]) == 1) {
                             Parent dashbaord = FXMLLoader.load(getClass().getResource("FXMLDashbaord.fxml"));
                             Stage stage = new Stage();
                             stage.setTitle("Panel Administrativo");
-                            stage.setScene(new Scene(dashbaord, 800, 800));
+                            stage.setScene(new Scene(dashbaord));
                             stage.show();
                             ((Node) (event.getSource())).getScene().getWindow().hide();
                         }
@@ -92,13 +98,13 @@ public class FXMLDocumentController implements Initializable {
     public String[] getCredentials(String user) throws SQLException {
         Connection connection = getConnectToDB();
 
-        String query = "SELECT * FROM pos_users WHERE user_name='"+user+"'";
-        String user_name = "", user_password = "", permission="";
+        String query = "SELECT * FROM pos_users WHERE user_name='" + user + "'";
+        String user_name = "", user_password = "", permission = "";
         String[] arrayUser;
         arrayUser = new String[3];
         try ( // create the java statement
                 Statement st = connection.createStatement()) {
-                ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
                 user_name = rs.getString("user_name");
