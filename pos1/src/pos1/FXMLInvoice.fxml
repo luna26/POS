@@ -24,14 +24,14 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="63.0" text="Nombre" />
-            <Label layoutX="414.0" layoutY="28.0" text="Direccion" />
-            <Label layoutX="27.0" layoutY="100.0" text="Cedula" />
-            <Label layoutX="22.0" layoutY="136.0" text="Telefono" />
-            <TextField layoutX="114.0" layoutY="59.0" prefHeight="25.0" prefWidth="218.0" />
-            <TextField layoutX="114.0" layoutY="96.0" prefHeight="25.0" prefWidth="218.0" />
-            <TextField layoutX="114.0" layoutY="132.0" prefHeight="25.0" prefWidth="218.0" />
-            <TextArea layoutX="414.0" layoutY="44.0" prefHeight="113.0" prefWidth="227.0" />
+            <Label  layoutX="25.0" layoutY="63.0" text="Nombre" />
+            <Label  layoutX="414.0" layoutY="28.0" text="Direccion" />
+            <Label  layoutX="27.0" layoutY="100.0" text="Cedula" />
+            <Label  layoutX="22.0" layoutY="136.0" text="Telefono" />
+            <TextField fx:id="txtnameCust" layoutX="114.0" layoutY="59.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextField fx:id="txtidCus"  layoutX="114.0" layoutY="96.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextField fx:id="txttelCus" layoutX="114.0" layoutY="132.0" prefHeight="25.0" prefWidth="218.0" />
+            <TextArea fx:id="txtdirCus" layoutX="414.0" layoutY="44.0" prefHeight="113.0" prefWidth="227.0" />
          </children>
       </Pane>
       <Pane layoutX="28.0" layoutY="263.0" prefHeight="403.0" prefWidth="664.0">
@@ -53,7 +53,7 @@
             <Button fx:id="btnAddProductInvoice" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" text="Agregar Producto" />
             <TextField fx:id="txtCodeToAdd" layoutX="145.0" layoutY="60.0" promptText="Codigo de Producto" />
             <Button layoutX="540.0" layoutY="358.0" mnemonicParsing="false" text="Eliminar Prodcuto" />
-            <Button layoutX="14.0" layoutY="358.0" mnemonicParsing="false" text="Generar Factura" />
+            <Button fx:id="btnGenerateInvoice" layoutX="14.0" layoutY="358.0" mnemonicParsing="false" text="Generar Factura" />
          </children>
       </Pane>
       <Label layoutX="43.0" layoutY="666.0" text="Total sin IV">

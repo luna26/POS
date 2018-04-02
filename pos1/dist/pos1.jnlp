@@ -32,7 +32,7 @@
     <jar href="lib\osgi-resource-locator-1.0.1.jar" size="20303" download="eager" />
     <jar href="lib\persistence-api-1.0.jar" size="53400" download="eager" />
     <jar href="lib\validation-api-1.1.0.Final.jar" size="65320" download="eager" />
-    <jar href="pos1.jar" size="42186" download="eager" />
+    <jar href="pos1.jar" size="48077" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="pos1" >
     <param name="requiredFXVersion" value="8.0+"/>

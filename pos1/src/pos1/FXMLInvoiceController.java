@@ -5,6 +5,7 @@
  */
 package pos1;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,13 +20,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -41,13 +47,16 @@ public class FXMLInvoiceController implements Initializable {
     TableColumn codeCol, nameCol, uniPCol, cantCol, totalCant;
 
     @FXML
-    Button btnAddProductInvoice;
+    Button btnAddProductInvoice, btnGenerateInvoice;
 
     @FXML
-    TextField txtCodeToAdd;
-    
+    TextField txtCodeToAdd, txtnameCust, txtidCus, txttelCus;
+
     @FXML
     Label totalWithoutIV, IVLabel, totaLabel;
+
+    @FXML
+    TextArea txtdirCus;
 
     ObservableList<InvoiceModel> dataInvoice = FXCollections.observableArrayList();
 
@@ -75,6 +84,7 @@ public class FXMLInvoiceController implements Initializable {
         );
 
         btnAddProductInvoice.setOnAction(btnInvoiceHandler);
+        btnGenerateInvoice.setOnAction(btnInvoiceGenerateHandler);
     }
 
     EventHandler<ActionEvent> btnInvoiceHandler = new EventHandler<ActionEvent>() {
@@ -87,6 +97,73 @@ public class FXMLInvoiceController implements Initializable {
             }
         }
     };
+
+    EventHandler<ActionEvent> btnInvoiceGenerateHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                generateInvoice();
+            } catch (SQLException ex) {
+                Logger.getLogger(FXMLInvoiceController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLInvoiceController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    };
+
+    public void generateInvoice() throws SQLException, IOException {
+        String customerName, customerAddress, customerTel, customerId, total, totalIV, IV;
+        customerName = txtnameCust.getText();
+        customerAddress = txtdirCus.getText();
+        customerTel = txttelCus.getText();
+        customerId = txtidCus.getText();
+        total = totalWithoutIV.getText();
+        totalIV = totaLabel.getText();
+        IV = IVLabel.getText();
+        String idInvoice;
+        idInvoice = "";
+        Connection connection = getConnectToDB();
+        String query = "INSERT INTO pos_invoice (invoice_cust_name,invoice_cust_address,invoice_cust_id,invoice_cust_tel,invoice_iv, invoice_total, invoice_total_iv) VALUES(" + "\"" + customerName + "\"" + "," + "\"" + customerAddress + "\"" + "," + "\"" + customerId + "\"" + "," + customerTel + "," + total + "," + "\"" + totalIV + "\"" + ", " + "\"" + IV + "\"" + ");";
+
+        try ( // create the java statement
+                Statement st = connection.createStatement()) {
+            st.executeUpdate(query);
+        }
+
+        String queryID = "SELECT invoice_id FROM pos_invoice ORDER BY invoice_id DESC LIMIT 1";
+        try ( // create the java statement
+                Statement st = connection.createStatement()) {
+            ResultSet rs = st.executeQuery(queryID);
+            while (rs.next()) {
+                idInvoice = rs.getString("invoice_id");
+                System.out.println("EL ID ES " + idInvoice);
+                saveItemsInvoice(idInvoice);
+            }
+        }
+        connection.close();
+    }
+
+    public void saveItemsInvoice(String idInvoice) throws SQLException, IOException {
+        Connection connection = getConnectToDB();
+
+        for (int i = 0; i < dataInvoice.size(); i++) {
+            String query = "INSERT INTO pos_invoice_detail (invoice_id_product,detail_id_invoice,detail_cant,detail_total) VALUES(" + "\"" + dataInvoice.get(i).getCode() + "\"" + "," + "\"" + idInvoice + "\"" + "," + "\"" + dataInvoice.get(i).getCant() + "\"" + "," + "\"" + dataInvoice.get(i).getTotal() + "\"" + ");";
+            try ( // create the java statement
+                    Statement st = connection.createStatement()) {
+                st.executeUpdate(query);
+            }
+        }
+        openLastInvoice();
+        connection.close();
+    }
+
+    public void openLastInvoice() throws IOException {
+        Parent dashbaord = FXMLLoader.load(getClass().getResource("FXMLInvoiceDetail.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Detalle de factura");
+        stage.setScene(new Scene(dashbaord));
+        stage.show();
+    }
 
     public void addProductToInvoice() throws SQLException {
         String code;
@@ -102,13 +179,13 @@ public class FXMLInvoiceController implements Initializable {
 
         try ( // create the java statement
                 Statement st = connection.createStatement()) {
-                ResultSet rs = st.executeQuery(query);
-                int cant = dataInvoice.size();
+            ResultSet rs = st.executeQuery(query);
+            int cant = dataInvoice.size();
             for (int i = 0; i < cant; i++) {
                 if (dataInvoice.get(i).code.getValue().equals(code)) {
                     cantProd = Integer.parseInt(dataInvoice.get(i).cant.getValue());
                     cantProd = cantProd + 1;
-                    priceTotal = cantProd*Integer.parseInt(dataInvoice.get(i).price.getValue());
+                    priceTotal = cantProd * Integer.parseInt(dataInvoice.get(i).price.getValue());
                     dataInvoice.add(new InvoiceModel(dataInvoice.get(i).code.getValue(), dataInvoice.get(i).name.getValue(), dataInvoice.get(i).price.getValue(), Integer.toString(cantProd), Integer.toString(priceTotal)));
                     dataInvoice.remove(i);
                     flag = true;
@@ -125,26 +202,26 @@ public class FXMLInvoiceController implements Initializable {
             invoiceTbl.setItems(dataInvoice);
         }
     }
-    
-    public void fillTotal(){
+
+    public void fillTotal() {
         //TOTAL WITHOUT IV
         int total;
         double IV, totalIV;
         total = 0;
         IV = 0;
         for (int i = 0; i < dataInvoice.size(); i++) {
-               total = total + Integer.parseInt(dataInvoice.get(i).total.getValue());
+            total = total + Integer.parseInt(dataInvoice.get(i).total.getValue());
         }
         totalWithoutIV.setText(Integer.toString(total));
-        
+
         //TOTAL IV
-        IV = total*0.13;
+        IV = total * 0.13;
         IVLabel.setText(String.valueOf(IV));
-        
+
         //TOTAL
         totalIV = IV + total;
         totaLabel.setText(String.valueOf(totalIV));
-        
+
     }
 
     public Connection getConnectToDB() {
@@ -164,5 +241,4 @@ public class FXMLInvoiceController implements Initializable {
         }
         return connection;
     }
-
 }

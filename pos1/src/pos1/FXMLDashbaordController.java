@@ -58,6 +58,7 @@ public class FXMLDashbaordController implements Initializable {
                 Stage stage = new Stage();
                 stage.setTitle("Usuarios");
                 stage.setScene(new Scene(inventory));
+                inventory.setUserData("esto es una prueba");
                 stage.show();
             } catch (IOException ex) {
                 Logger.getLogger(FXMLDashbaordController.class.getName()).log(Level.SEVERE, null, ex);
